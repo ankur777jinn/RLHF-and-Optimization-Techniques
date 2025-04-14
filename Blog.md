@@ -43,11 +43,7 @@
  models such as ChatGPT (like when you are asked your preferred
  response by ChatGPT while is generates 2 responses). In RLHF, the
  model is fine-tuned based on scores/labels provided by humans via
- various
-
- 1
-
- approaches like PPO, DPO and GRPO which would be expanded on in this
+ various approaches like PPO, DPO and GRPO which would be expanded on in this
  blog.
 
 ## Prerequisites Crash Course (LLMs and RL)
@@ -56,7 +52,7 @@
 
  Word2Vec learns word representations by maximizing the probability of
  context words given a target word using the Skip-Gram model:
-
+<img src='![image](https://github.com/user-attachments/assets/4cee80b3-7328-4956-a015-3480ca658398)'> <br> 
  X
 
  max logP(c \| w) where
