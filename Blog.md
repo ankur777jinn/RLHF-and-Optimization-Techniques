@@ -52,13 +52,7 @@
 
  Word2Vec learns word representations by maximizing the probability of
  context words given a target word using the Skip-Gram model:
-<img src='![image](https://github.com/user-attachments/assets/4cee80b3-7328-4956-a015-3480ca658398)'> <br> 
- X
-
- max logP(c \| w) where
-
- (w,c)∈D
-⃗vc·⃗vw P(c \| w) = c′∈V e⃗vc′·⃗vw
+<img src='../images/Cicero_architecture.jpg'> <br> 
  LLMs model the probability of the next word in a sequence, given the
  previous ones. Mathematically:
 
