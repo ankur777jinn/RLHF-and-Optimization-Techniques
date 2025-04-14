@@ -52,25 +52,26 @@
 
  Word2Vec learns word representations by maximizing the probability of
  context words given a target word using the Skip-Gram model:
-$$
-{\max \sum_{(w,c) \in D} \log P(c \mid w) \quad \text{where} \quad P(c \mid w) = \frac{e^{\mathbf{v}_c \cdot \mathbf{v}_w}}{\sum_{c' \in V} e^{\mathbf{v}_{c'} \cdot \mathbf{v}_w}}
-$$
 
+$$
+\max \sum_{(w,c) \in D} \log P(c \mid w)$$where$$ \quad P(c \mid w) = \frac{e^{v_c \cdot v_w}}{\sum_{c' \in V} e^{v_{c'} \cdot v_w}}
+$$
 
  LLMs model the probability of the next word in a sequence, given the
  previous ones. Mathematically:
 
- n
+ $$
+P(w_1, w_2, \ldots, w_n) = \prod_{t=1}^{n} P(w_t \mid w_1, \ldots, w_{t-1})
+$$
 
- P(w1,w2,...,wn) = P(wt \| w1,...,wt−1) t=1
 
  The model’s parameters are optimized by minimizing the negative
  log-likelihood loss over a large corpus using stochastic gradient
  descent (SGD) or its variants:
 
- n
+ $$ L= -\sum_{t=1}^{n}\log P(w_t\mid w_{t<1})
+ $$
 
- L = − logP(wt \| w\<t) t=1
 
  This is pretty much all one needs to know about LLMs to understand
  RLHF.
@@ -80,7 +81,7 @@ $$
  State: The state st represents the environment’s configuration at time
  t.
 
- st ∈ S
+ $$ s_t ∈ S$$
 
  Agent: The agent observes the state and selects actions to maximize
  cumulative reward.
@@ -88,14 +89,13 @@ $$
  Reward: The reward rt is the feedback received after taking action at
  in state st.
 
- rt = R(st,at)
+ $$r_t = R(s_t,a_t)$$
 
  Policy: The policy π defines a probability distribution over actions
  given a state.
 
- π(a \| s) = P(at = a \| st = s)
+$$ π(a \| s) = P(a_t = a \| s_t = s)$$
 
- 2
 
  ## An overview of the Classic Re-inforcement Learn-ing from Human Feedback
 
@@ -107,7 +107,7 @@ $$
  Lemma 1 (Stochastic Transitions): We model the next state as
  stochastic, i.e.,
 
- st+1 ∼ P(st+1 \| st,at)
+ $$s_{t+1} ∼ P(s_{t+1} \| s_t,a_t)$$
 
  Trajectory Probability: The probability of a trajectory τ under policy
  π is given by:
