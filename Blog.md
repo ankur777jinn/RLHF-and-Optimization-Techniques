@@ -53,7 +53,7 @@
  Word2Vec learns word representations by maximizing the probability of
  context words given a target word using the Skip-Gram model:
 $$
-\max \sum_{(w,c) \in D} \log P(c \mid w) \quad \text{where} \quad P(c \mid w) = \frac{e^{\mathbf{v}_c \cdot \mathbf{v}_w}}{\sum_{c' \in V} e^{\mathbf{v}_{c'} \cdot \mathbf{v}_w}}
+{\max \sum_{(w,c) \in D} \log P(c \mid w) \quad \text{where} \quad P(c \mid w) = \frac{e^{\mathbf{v}_c \cdot \mathbf{v}_w}}{\sum_{c' \in V} e^{\mathbf{v}_{c'} \cdot \mathbf{v}_w}}
 $$
 
 
