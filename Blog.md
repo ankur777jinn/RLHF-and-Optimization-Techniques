@@ -112,18 +112,14 @@ $$ π(a \| s) = P(a_t = a \| s_t = s)$$
  Trajectory Probability: The probability of a trajectory τ under policy
  π is given by:
 
- T−1
 
- P(τ \| π) = ρ0(s0) P(st+1 \| st,at)π(at \| st) t=0
+ $$P(τ \| π) = ρ_0(s_0) \prod_{t=0}^{T-1}P(s_{t+1} \| s_t,a_t)π(a_t \| s_t)$$
 
  Lemma 2 (Discounted Rewards): We discount rewards since immediate
  rewards are preferred:
 
- ∞
+  $$G_t = \sum_{k=0}^{∞}γ^{k}r_{t+k}$$, where γ ∈ \[0,1)
 
- Gt = γkrt+k, where γ ∈ \[0,1)
-
- k=0
 
  Trajectories are basically a series of states and actions. The goal is
  to select a policy that maximizes the expected return:
