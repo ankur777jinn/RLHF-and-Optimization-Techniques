@@ -124,7 +124,7 @@ $$ π(a \| s) = P(a_t = a \| s_t = s)$$
  Trajectories are basically a series of states and actions. The goal is
  to select a policy that maximizes the expected return:
 
- π∗ = argmaxJ(π)
+$$ π∗ = argmax J(π)$$
 
  The function J(π) represents this expected return. It is calculated by
  averaging the total rewards R(τ) received over all possible
@@ -132,14 +132,12 @@ $$ π(a \| s) = P(a_t = a \| s_t = s)$$
  policy π. In other words, the better the policy, the more likely it is
  to generate high-reward trajectories:
 
- Z
-
- J(π) = P(τ \| π)R(τ) = Eτ∼π\[R(τ)\]. τ
+ $$J(π) = \int_{τ}P(τ \| π)R(τ) = E_{τ∼π}\[R(τ)\]$$
 
  To maximize the expected return in LLMs where the policy is
  parameterized by θ, we use gradient ascent as follows:
 
- θk+1 = θk +α∇θJ(πθ)θk
+ $$θ_{k+1} = θ_k +α∇_0J(π_0)|_{0_k}$$
 
  Now the goal is to find an expression of ’J’ and compute it. Of course
  it is computationally impossible to calculate the return over all
@@ -369,7 +367,30 @@ $$ π(a \| s) = P(a_t = a \| s_t = s)$$
  • H\[π\] encourages exploration by maximizing policy entropy
 
  ## Direct preference optimization
+Direct Preference Optimization (DPO) is an algorithm used in RLHF that fine-tunes language models without training a separate reward model, instead it  implicitly optimizes the same objective as existing RLHF algorithms (reward maximization with a KL-divergence constraint). Unlike previous RLHF algorithms, it is simple to implement and straight forward to train.
 
+ Given a dataset of preferences (from human question-answering), we have 
+ 
+ $$(x,y_w,y_l) ∼ D$$ 
+ 
+ where x corresponds to the question of prompt asked from the model,
+ 
+ $$y_w$$ corresponding to the good or preferred answer,
+ 
+ and $$y_l$$ corresponds to the bad or non-preferred answer.
+Also let $$r^{*}$$ be a reward model with parameters as (x,y), i.e. prompts and feedbacks.
+ Fistly, we need to find a way to convert these preferences into scores or probabalistic rewards. The **BRADLEY-TERRY MODEL** gives quite a good expression for this, which is given as
+
+$$ \quad P(y_w > y_l) = \frac{e^{r\ast (x,y_w)}}{ e^{r\ast (x,y_w)} + e^{r\ast (x,y_l)}}
+$$
+
+The loss function of the reward model can be given as:
+
+$$
+L = - E_{(x,y_w,y_l)∼ D}{[}log σ ( r_ φ(x,y_w) -r_ φ(x,y_l)){]}
+$$
+
+Our next goal is to maximize the probability that the preference model ranks our responses correctly. One may think that the way to maximize ( find all the values of one or more variable where the function is maximized) is to find the derivative and setting it to zero to find the optimum value points of the variables. But in case of RLHF, we have a constrained optimization problem
  ## Group Relative Policy Optimization
 
  7
