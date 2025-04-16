@@ -409,9 +409,21 @@ $$Z(x) = \sum_y π_{ref}(y/x){exp}(\frac{1}{β}r(x,y))$$
 
 Now, this may seem like a nice theoretical solution for the constraint problem but this is not computationally tractable. Why, you may ask? The sum over all the y suggests that with every prompt, Z(x) would be needed to be calculated for every possible answer, and the size of the summation only increases with the vocabulary size.
 
-Let's just leave that as it is for now and assume that we somehow manage to get the optimal policy $$π_{r}(y/x)$$, we can hope 
+Let's just leave that as it is for now and assume that we somehow manage to get the optimal policy $$π_{*}(y/x)$$, we can hope to compute the Loss. Thus, on taking log we get:
 
+$$r(x,y)= βlog \frac{π_r(y/x)}{π_{ref}(y/x)} + βlog Z(x)$$
 
+If we put in this expression to the Bradley- Terry model, we get:
+
+$$ P(y_w > y_l) = σ(r(x,y_w)- r(x,y_l))= σ(βlog \frac{π_r(y_w/x)}{π_{ref}(y_w/x)} + βlog Z(x) - βlog \frac{π_r(y_l/x)}{π_{ref}(y_l/x)} - βlog Z(x)) $$
+
+$$= σ(βlog \frac{π_r(y_w/x)}{π_{ref}(y_w/x)} - βlog \frac{π_r(y_l/x)}{π_{ref}(y_l/x)} ) $$
+
+To maximize the probability of choosiing $$y_w$$ instead of $$y_l$$, we would insert the above expression into the Bradley- Terry Loss function, now we have:
+
+$$ L_{DPO}( π_r ;  π_{ref}) = - {**E**{(x,y_w,y_l)∼ D}} {[} log  σ (βlog \frac{π_r(y_w/x)}{π_{ref}(y_w/x)} - βlog \frac{π_r(y_l/x)}{π_{ref}(y_l/x)} ){]}$$ 
+
+So now we can easily maximize the probability by minimizing this loss function, thus finding an optimum policy. This is much easier than optimizing the reward function like we did earlier. Optimizing the optimal policy also optimizes the earlier mentioned reward function as it depends on it.
  ## Group Relative Policy Optimization
 
- 7
+ 
