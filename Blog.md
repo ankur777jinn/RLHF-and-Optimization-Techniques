@@ -457,16 +457,16 @@ If group size 𝐾=2 and rewards are binary preferences (e.g., winner vs loser),
 Therefore,this makes DPO a special case of GRPO with hard binary feedback and no normalization, while GRPO generalizes to scalar rewards and group-based reasoning.
 It provides a robust and scalable method for optimization while also overcoming the limitations for DPO which relies solely on Binary Feedback.
 
-##References
- * [GRPO Paper By DeepSeek]((https://arxiv.org/pdf/2402.03300))
+## References
+ * [GRPO Paper By DeepSeek](https://arxiv.org/pdf/2402.03300)
  * [2023 DPO paper (NeurIPS)](https://arxiv.org/pdf/2305.18290)
- * [](https://huggingface.co/learn/deep-rl-course/en/unit8/introduction)
+ * [Huggingface Deep RL](https://huggingface.co/learn/deep-rl-course/en/unit8/introduction)
  * [PPO Optimization](https://arxiv.org/pdf/1707.06347)
- * [](https://iclr-blogposts.github.io/2024/blog/the-n-implementation-details-of-rlhf-with-ppo/)
- * [](https://iclr-blogposts.github.io/2024/blog/rlhf-without-rl/#direct-preference-optimization)
- * [](https://www.youtube.com/watch?v=90ImcYM0xWc&t=637s)
+ * [ICLR Blogpost RLHF with PPO](https://iclr-blogposts.github.io/2024/blog/the-n-implementation-details-of-rlhf-with-ppo/)
+ * [ICLR DPO](https://iclr-blogposts.github.io/2024/blog/rlhf-without-rl/#direct-preference-optimization)
+ * [Youtube](https://www.youtube.com/watch?v=90ImcYM0xWc&t=637s)
  * [DPO- Umar jamil](https://youtu.be/hvGa5Mba4c8?si=3wGWo0Vcw_wT2Hyq)
- * [](https://youtu.be/qGyFrqc34yc?si=6Nx-1hTMGk1Tr1nw)
+ * [PPO- Umar Jamil](https://youtu.be/qGyFrqc34yc?si=6Nx-1hTMGk1Tr1nw)
 
 
  
