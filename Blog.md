@@ -184,21 +184,18 @@ $$
  • $$Q^π(s,a)$$ is the expected return when the agent starts in state s,
  takes action a, and then follows the policy π thereafter:
 
- " ∞ \# Qπ(s,a) = Eπ γtrt s0 = s,a0 = a
 
- $$ Q^π(s,a) = E_π \[ \sum_{t=0}^{∞} γ^t r_t | 
+ $$ Q^π(s,a) = E_π \[ \sum_{t=0}^{∞} γ^t r_t | s_0 = s,a_0 = a\]$$
 
- t=0
 
  • $$V^π(s)$$ is the expected return when the agent starts in state s and
  follows the policy π from the beginning, with the first action also
- sampled from π: " ∞ \#
+ sampled from π:
 
- Vπ(s) = Ea∼π(·\|s) \[Qπ(s,a)\] = Eπ γtrt s0 = s
+ $$V^π(s) = E_{a∼π(·\|s)} \[Q^π(s,a)\] = Eπ \[\sum_{t=0}^{∞}γ^tr_t | s_0 = s \]$$
 
- t=0
 
- Intuitively, Aπ(s,a) measures how much better (or worse) an action a
+ Intuitively, $$A^π(s,a)$$ measures how much better (or worse) an action a
  is than what the policy would typically do in state s.
 
  **3.1.1 Monte Carlo Estimation**
@@ -208,17 +205,14 @@ $$
  state (or state-action pair) as an unbiased estimator of expected
  return.
 
- 4
+ Let $$G_t$$ denote the total return starting from time t:
 
- Let Gt denote the total return starting from time t:
 
- T−t−1
+ $$G_t = \sum_{l=0}^{T-t-1} γ^lr_{t+l}$$
 
- Gt = γlrt+l
+ Then, the MC estimate of the advantage is:
 
- l=0 Then, the MC estimate of the advantage is:
-
- Aπ(st,at) = Gt −Vπ(st)
+ $$\hat{A^π}(s_t,a_t) = G_t − \hat{V^π}(s_t)$$
 
  where Vπ(st) is estimated as the average of Gt’s over all times st is
  visited.
