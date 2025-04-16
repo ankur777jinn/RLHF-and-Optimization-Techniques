@@ -426,4 +426,30 @@ $$ L_{DPO}( π_r ;  π_{ref}) = - {**E**{(x,y_w,y_l)∼ D}} {[} log  σ (βlog \
 So now we can easily maximize the probability by minimizing this loss function, thus finding an optimum policy. This is much easier than optimizing the reward function like we did earlier. Optimizing the optimal policy also optimizes the earlier mentioned reward function as it depends on it.
  ## Group Relative Policy Optimization
 
+
+Group Relative Policy Optimization (GRPO) is a reinforcement learning algorithm designed to enhance reasoning in large language models (LLMs) by directly leveraging preference signals without requiring a learned value function. Unlike Proximal Policy Optimization (PPO), which estimates advantages via a critic, GRPO computes relative advantages across multiple responses sampled from the same prompt.
+
+Consider a policy $\pi_\theta(a \mid s)$ that generates completions $a$ given a prompt $s$. For each $s$, the model samples a group of $K$ responses $\{a_1, a_2, \ldots, a_K\}$ from the current policy. These responses are scored using a reward model $R(s, a_i)$, yielding scalar rewards $\{r_1, r_2, \ldots, r_K\}$.
+
+To isolate how good a response is \emph{relative to its peers}, GRPO normalizes the rewards within the group. The per-sample advantage is estimated via:
+
+$$
+\hat{A_i} = \frac{r_i - \mu_r}{\sigma_r + \epsilon}, \quad \text{where} \quad \mu_r = \frac{1}{K} \sum_{j=1}^{K} r_j, \quad \sigma_r = \sqrt{\frac{1}{K} \sum_{j=1}^{K} (r_j - \mu_r)^2}
+$$
+
+
+This normalized form ensures that only relative differences within the group drive the learning signal, stabilizing updates and eliminating reward-scale dependence.
+
+Intuitively, if a response is much better than its siblings in the same group, it receives a large positive $\hat{A}_i$; if it is worse, $\hat{A}_i$ becomes negative. This guides the model to generate relatively better outputs—mirroring how humans judge responses not in isolation, but against alternatives.
+
+PPO ( which we talked about earlier) brings a substantial memory and computational burden. Also, only the last token is assigned a reward score by the reward model, which complicates the training of a value function. GRPO removes this problem and uses the average reward of multiple sampled outputs. More simple, GRPO samples agroup of outputs $${{𝑜_1, 𝑜_2, · · · , 𝑜_𝐺 }}$$ from the old policy $$𝜋_{𝜃_{𝑜𝑙𝑑}}$$ and then optimizes the policy model
+by maximizing the following objective:
+
+<img src='Maths_img/Maths.jpg'> <br> 
+
+where 𝜀 and 𝛽 are hyper-parameters, and $$\hat{𝐴_{𝑖,t}}$$ is the advantage calculated based on relative rewards of the outputs inside each group.
+
+If group size 𝐾=2 and rewards are binary preferences (e.g., winner vs loser), GRPO reduces to a form similar to Direct Preference Optimization (DPO) whose expression is mgiven by the Bradley-Terry model.
+Therefore,this makes DPO a special case of GRPO with hard binary feedback and no normalization, while GRPO generalizes to scalar rewards and group-based reasoning.
+
  
