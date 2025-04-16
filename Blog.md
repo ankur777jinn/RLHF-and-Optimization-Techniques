@@ -384,13 +384,34 @@ Also let $$r^{*}$$ be a reward model with parameters as (x,y), i.e. prompts and 
 $$ \quad P(y_w > y_l) = \frac{e^{r\ast (x,y_w)}}{ e^{r\ast (x,y_w)} + e^{r\ast (x,y_l)}}
 $$
 
+we also get the result as of $$σ(A-B) = \frac{e^A}{e^A + e^B}$$
+
 The loss function of the reward model can be given as:
 
 $$
 L = - E_{(x,y_w,y_l)∼ D}{[}log σ ( r_ φ(x,y_w) -r_ φ(x,y_l)){]}
 $$
 
-Our next goal is to maximize the probability that the preference model ranks our responses correctly. One may think that the way to maximize ( find all the values of one or more variable where the function is maximized) is to find the derivative and setting it to zero to find the optimum value points of the variables. But in case of RLHF, we have a constrained optimization problem
+Our next goal is to maximize the probability that the preference model ranks our responses correctly. One may think that the way to maximize ( find all the values of one or more variable where the function is maximized) is to find the derivative and setting it to zero to find the optimum value points of the variables. But in case of RLHF, we have a constrained optimization problem, which means that aside from maximizing the reward score, we want the policy to not behave  too differently from the initial unoptimized policy(i.e. KL Divergence).
+
+$$J_{RLHF} = **max_{π_θ}** E_{x ∼D, y∼π_θ (y/x)}  [r_ φ(x,y) - βD_{KL}{[}π_θ(y/x)||π_{ref}(y/x){]}$$
+
+This sampling is not Differentiable, thus we are unable to use methods such as the gradient descent on this objective function. This is why we were previously forced to use RL algorithms like PPO.
+The constraint of KL Divergence is added so that the model may not just choose some tokens that are able to achieve high rewards but actually are absolute nonsense. This is known as **reward hacking**.
+
+Following the 2023 NeurIPS paper on DPO, a solution to the optimization problem is given as:
+
+$$π_r(y/x) = \frac{1}{Z(x)}π_{ref}(y/x){exp}(\frac{1}{β}r(x,y))$$
+
+where
+
+$$Z(x) = \sum_y π_{ref}(y/x){exp}(\frac{1}{β}r(x,y))$$
+
+Now, this may seem like a nice theoretical solution for the constraint problem but this is not computationally tractable. Why, you may ask? The sum over all the y suggests that with every prompt, Z(x) would be needed to be calculated for every possible answer, and the size of the summation only increases with the vocabulary size.
+
+Let's just leave that as it is for now and assume that we somehow manage to get the optimal policy $$π_{r}(y/x)$$, we can hope 
+
+
  ## Group Relative Policy Optimization
 
  7
