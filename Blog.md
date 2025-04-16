@@ -186,6 +186,8 @@ $$
 
  " ∞ \# Qπ(s,a) = Eπ γtrt s0 = s,a0 = a
 
+ $$ Q^π(s,a) = E_π \[ \sum_{t=0}^{∞} γ^t r_t | 
+
  t=0
 
  • $$V^π(s)$$ is the expected return when the agent starts in state s and
