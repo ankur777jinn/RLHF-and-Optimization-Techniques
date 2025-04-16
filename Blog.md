@@ -143,13 +143,10 @@ $$ π∗ = argmax J(π)$$
  it is computationally impossible to calculate the return over all
  possible trajectories. Therefore we approximate it as:
 
- X X
+$$
+\hat{g} = \frac{1}{|\mathcal{D}|} \sum_{\tau \in \mathcal{D}} \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t | s_t) R(\tau)
+$$
 
- gˆ = ∇θ logπθ(at\|st)R(τ)
-
- τ∈D t=0
-
- 3
 
  The original gradient estimator has pretty high variance because it
  dumps the entire return R(τ) on every action taken during the episode,
@@ -160,7 +157,7 @@ $$ π∗ = argmax J(π)$$
  means we need a lot of data to get there.
 
  Todealwiththis, weswitchtousingthe advantage function, definedas
- Aπ(st,at) = Qπ(st,at)−Vπ(st). It tells us how much better (or worse)
+ $$A^π(s_t,a_t) = Q^π(s_t,a_t)−V^π(s_t)$$. It tells us how much better (or worse)
  an action is compared to what the agent would normally do in that
  state. So instead of crediting every
 
@@ -168,11 +165,10 @@ $$ π∗ = argmax J(π)$$
  action actually was. This gives us a new and improved gradient
  estimator:
 
- X X
+ $$
+\hat{g} = \frac{1}{|\mathcal{D}|} \sum_{\tau \in \mathcal{D}} \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t | s_t) A^π(s_t,a_t)
+$$
 
- gˆ = ∇θ logπθ(at\|st)A (st,at),
-
- τ∈D t=0
 
  which is still unbiased but way less noisy, making training smoother
  and more eficient.
@@ -183,16 +179,16 @@ $$ π∗ = argmax J(π)$$
  particular action in a given state, compared to the average
  performance of the policy from that state. It is defined as:
 
- Aπ(s,a) = Qπ(s,a)−Vπ(s)
+ $$A^π(s,a) = Q^π(s,a)−V^π(s)$$
 
- • Qπ(s,a) is the expected return when the agent starts in state s,
+ • $$Q^π(s,a)$$ is the expected return when the agent starts in state s,
  takes action a, and then follows the policy π thereafter:
 
  " ∞ \# Qπ(s,a) = Eπ γtrt s0 = s,a0 = a
 
  t=0
 
- • Vπ(s) is the expected return when the agent starts in state s and
+ • $$V^π(s)$$ is the expected return when the agent starts in state s and
  follows the policy π from the beginning, with the first action also
  sampled from π: " ∞ \#
 
