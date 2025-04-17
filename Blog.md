@@ -1,6 +1,7 @@
 # Reinforcement Learning From Human Feedback (RLHF) and its Optimization Techniques
 
- Shreeyam Bangera and Ankur Dahiya
+ $$\{Shreeyam} \{Bangera}$$           $$\{Ankur} \{Dahiya}$$
+ 
  April 2025
 
 ## Introduction
@@ -275,6 +276,7 @@ $$δ_t = r_t +γ\hat{V^π}(s-{t+1}) −\hat{V^π}(s_t)$$
  • Intermediate $$λ$$ values allow tuning the bias-variance tradeoff.
 
  3.1.4 Summary Table
+<img src='Maths_img/Table.jpg'> <br>
 
  3.2 Failure Modes of Vanilla Policy Gradient (VPG)
 
