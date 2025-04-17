@@ -1,8 +1,8 @@
-# $$\{Reinforcement Learning From Human Feedback (RLHF) and its Optimization Techniques}$$
+# **Reinforcement Learning From Human Feedback (RLHF) and its Optimization Techniques**
 
- \{Shreeyam} \{Bangera}           \{Ankur} \{Dahiya}
+ _**Shreeyam Bangera**_$$^{[1\]}$$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_**Ankur Dahiya**_$$^{[2\]}$$
  
- April 2025
+ _April 2025_
 
 ## Introduction
 
