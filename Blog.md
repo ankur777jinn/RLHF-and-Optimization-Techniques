@@ -1,6 +1,6 @@
-# Reinforcement Learning From Human Feedback (RLHF) and its Optimization Techniques
+# $$\{Reinforcement Learning From Human Feedback (RLHF) and its Optimization Techniques}$$
 
- $$\{Shreeyam} \{Bangera}$$           $$\{Ankur} \{Dahiya}$$
+ \{Shreeyam} \{Bangera}           \{Ankur} \{Dahiya}
  
  April 2025
 
