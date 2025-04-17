@@ -214,7 +214,7 @@ $$
 
  $$\hat{A^π}(s_t,a_t) = G_t − \hat{V^π}(s_t)$$
 
- where Vπ(st) is estimated as the average of Gt’s over all times st is
+ where $$V^π(s_t)$$ is estimated as the average of Gt’s over all times st is
  visited.
 
  Intuition: This approach directly compares what actually happened (via
@@ -227,12 +227,12 @@ $$
  returns, which allows for online and incremental learning. The 1-step
  TD error is defined as:
 
- δt = rt +γVπ(st+1) −Vπ(st)
+$$δ_t = r_t +γ\hat{V^π}(s-{t+1}) −\hat{V^π}(s_t)$$
 
  This TD error serves as a low-variance, biased estimator of the
  advantage:
 
- Aπ(st,at) ≈ δt
+ $$\hat{A^π}(s_t,a_t) ≈ δ_t$$
 
  Intuition: Instead of waiting to see how the episode ends, TD uses the
  im-mediate reward and the estimated future return to approximate the
@@ -245,36 +245,34 @@ $$
  TD estimator. It does so by taking an exponentially weighted sum of
  k-step TD errors.
 
- Let δt be the 1-step TD error as before. Then, GAE is defined as:
+ Let $$δ_t$$ be the 1-step TD error as before. Then, GAE is defined as:
 
- ∞ AGAE(γ,λ) = (γλ)lδt+l
+  $$\hat{A_t}^{GAE(γ,λ)} = \sum_{l=0}^{∞}(γλ)^lδ_{t+l}$$
 
- l=0
 
  For finite trajectories, this is truncated at the episode end.
  Alternatively, it can be computed eficiently in reverse via the
  recursion:
 
- At = δt +γλAt+1
+ $$\hat{A_t} = δ_t +γλ\hat{A_{t+1}}$$
 
  Parameters:
 
- • γ: discount factor, controlling horizon of future rewards.
+ • $$γ$$: discount factor, controlling horizon of future rewards.
 
- • λ: GAE parameter, controlling the trade-off between bias and
+ • $$λ$$: GAE parameter, controlling the trade-off between bias and
  variance.
 
- 5
 
  Interpretation:
 
- • When λ = 0, GAE reduces to 1-step TD: fast and low variance but
+ • When $$λ = 0$$, GAE reduces to 1-step TD: fast and low variance but
  biased.
 
- • When λ = 1, GAE becomes equivalent to the MC estimate: unbiased but
+ • When $$λ = 1$$, GAE becomes equivalent to the MC estimate: unbiased but
  high variance.
 
- • Intermediate λ values allow tuning the bias-variance tradeoff.
+ • Intermediate $$λ$$ values allow tuning the bias-variance tradeoff.
 
  3.1.4 Summary Table
 
@@ -283,80 +281,77 @@ $$
  The Vanilla Policy Gradient (VPG) method attempts to maximize the
  expected return by directly optimizing:
 
- " T \# J(θ) = Eπθ γtrt
+ $$ J(θ) = E_{π_θ}\[\sum_{t=0}^{T} γ^tr_t\]$$
 
- t=0
 
  Using the policy gradient theorem, the gradient is:
 
- h i ∇θJ(θ) = Eπθ ∇θ logπθ(at\|st) ·At
+ $$∇_θJ(θ) = E_{π_θ}\[ ∇_θ logπ_θ(a_t\|s_t) ·\hat{A_t}\]$$
 
  The VPG loss is defined as:
 
- h i LVPG(θ) = Et logπθ(at\|st)·At
+ $$L^{VPG}(θ) = E_t \[logπ_θ(a_t\|s_t)·\hat{A_t}\]$$
 
  Mathematical Issues:
 
- 1\. Unconstrained Update Magnitude: The policy πθ is updated without
+ 1\. Unconstrained Update Magnitude: The policy $$π_θ$$ is updated without
  any mechanism to control how far it moves from the original policy
  πθold. A single large gradient step can lead to:
 
- πθ(a\|s) ≪ πθold(a\|s) even if A(s,a) \> 0
+ $$π_θ(a\|s) ≪ π_{θ_{old}}(a\|s)$$ even if $$\hat{A}(s,a) \> 0$$
 
  This destroys the probability of good actions and leads to performance
  collapse.
 
- 2\. Distribution Mismatch: The trajectories are sampled from πθold,
- but the gradient is applied to πθ. The advantage estimates At are only
- valid under πθold, and large updates make them invalid for πθ.
+ 2\. Distribution Mismatch: The trajectories are sampled from $$π_{θ_{old}}$$,
+ but the gradient is applied to $$π_θ$$. The advantage estimates At are only
+ valid under $$π_{θ_{old}}$$, and large updates make them invalid for $$π_θ$$.
 
  3\. High Variance and Instability: Without any regularization or trust
  region, the updates are sensitive to noise in advantage estimates,
  leading to high variance and poor convergence.
-
- 6
 
  **3.3 Derivation of the PPO Objective**
 
  To address these issues, Proximal Policy Optimization (PPO) introduces
  a clipped surrogate objective that discourages large policy updates.
 
- Step 1: Define the Probability Ratio Let πθold be the current policy
- and πθ the new policy. Define the probability ratio:
+ Step 1: Define the Probability Ratio Let $$π_{θ_{old}}$$ be the current policy
+ and $$π_θ$$ the new policy. Define the probability ratio:
 
- πθ(at\|st) t πθold(at\|st)
+ $$r_t(\theta) = \frac{π_θ(a_t\|s_t)}{π_{θ_{old}}(a_t\|s_t)}$$
 
  Step 2: Surrogate Objective We want to improve the policy by
  maximizing the expected advantage weighted by this ratio:
 
- h i LCPI(θ) = Et rt(θ)·At
+  $$L^{CPI}(θ) = E_t\[ r_t(θ)·\hat{A_t}\]$$
 
  This is the basis for Conservative Policy Iteration. However, this
- still allows for large updates if rt(θ) becomes too large or too
+ still allows for large updates if $$r_t(θ)$$ becomes too large or too
  small.
 
  Step 3: Clipped Objective PPO introduces a clipped surrogate loss:
 
- h i LCLIP(θ) = Et min rt(θ) ·At, clip(rt(θ),1−ϵ,1+ ϵ)·At
+ $$L^{CLIP}(θ) = E_t\[ min (r_t(θ) ·\hat{A_t}, clip(r_t(θ),1−ϵ,1+ ϵ)·\hat{A_t}\]$$
 
  Interpretation:
 
- • If At \> 0: the objective increases with rt, but is capped at 1+ ϵ.
+ • If $$\hat{A_t} \> 0$$: the objective increases with $$r_t$$, but is capped at 1+ ϵ.
 
- • If At \< 0: the objective decreases with rt, but is floored at 1 −ϵ.
+ • If $$\hat{A_t} \< 0$$: the objective decreases with $$r_t$$, but is floored at 1 −ϵ.
 
- • This prevents the optimizer from moving πθ too far from πθold.
+ • This prevents the optimizer from moving $$π_θ$$ too far from $$π_{θ_{old}}$$.
 
  Final PPO Objective: In practice, the complete PPO loss also includes
  a value function loss and an entropy bonus:
 
- LPPO(θ) = Et LCLIP(θ)−c1 ·(Vθ(st)−Vtarget)2 +c2 ·H\[πθ\](st) Where:
+ $$L^{PPO}(θ) = E_t\[ L_t^{CLIP}(θ)−c_1 ·{(V_θ(s_t)−V_t^{target})}^2 +c_2 ·H\[π_θ\](s_t)\]$$ Where:
 
- • c1 weights the value function MSE loss
+ • $$c_1$$ weights the value function MSE loss.
 
- • c2 weights the entropy bonus
+ • $$c_2$$ weights the entropy bonus.
 
- • H\[π\] encourages exploration by maximizing policy entropy
+ • $$H\[π\]$$ encourages exploration by maximizing policy entropy.
 
  ## Direct preference optimization
 Direct Preference Optimization (DPO) is an algorithm used in RLHF that fine-tunes language models without training a separate reward model, instead it  implicitly optimizes the same objective as existing RLHF algorithms (reward maximization with a KL-divergence constraint). Unlike previous RLHF algorithms, it is simple to implement and straight forward to train.
