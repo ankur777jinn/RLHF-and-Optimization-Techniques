@@ -87,8 +87,8 @@ $$
  Agent: The agent observes the state and selects actions to maximize
  cumulative reward.
 
- Reward: The reward rt is the feedback received after taking action at
- in state st.
+ Reward: The reward $$r_t$$ is the feedback received after taking action at
+ in state $$s_t$$.
 
  $$r_t = R(s_t,a_t)$$
 
@@ -157,12 +157,10 @@ $$
  should eventually converge to the true gradient—but high variance
  means we need a lot of data to get there.
 
- Todealwiththis, weswitchtousingthe advantage function, definedas
+ To deal with this, we switch to using the advantage function, defined as
  $$A^π(s_t,a_t) = Q^π(s_t,a_t)−V^π(s_t)$$. It tells us how much better (or worse)
  an action is compared to what the agent would normally do in that
- state. So instead of crediting every
-
- action equally with the total return, we adjust for how good the
+ state. So instead of crediting every action equally with the total return, we adjust for how good the
  action actually was. This gives us a new and improved gradient
  estimator:
 
@@ -215,7 +213,7 @@ $$
 
  $$\hat{A^π}(s_t,a_t) = G_t − \hat{V^π}(s_t)$$
 
- where $$V^π(s_t)$$ is estimated as the average of Gt’s over all times st is
+ where $$V^π(s_t)$$ is estimated as the average of $$G_t’s$$ over all times $$s_t$$ is
  visited.
 
  Intuition: This approach directly compares what actually happened (via
